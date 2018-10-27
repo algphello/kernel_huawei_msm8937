@@ -1,0 +1,46 @@
+/ {
+	aliases {
+		i2c6 = &i2c_6;
+	};
+};
+
+&tlmm {
+	i2c_6 {
+			i2c_6_active: i2c_6_active {
+				/* active state */
+				mux {
+					pins = "gpio22", "gpio23";
+					function = "blsp_i2c6";
+				};
+
+				config {
+					pins = "gpio22", "gpio23";
+					drive-strength = <2>;
+					bias-disable;
+				};
+			};
+
+			i2c_6_sleep: i2c_6_sleep {
+				/* suspended state */
+				mux {
+					pins = "gpio22", "gpio23";
+					function = "gpio";
+				};
+
+				config {
+					pins = "gpio22", "gpio23";
+					drive-strength = <2>;
+					output-high;
+				};
+			};
+		};
+	};
+
+&i2c_6 {
+	  ti@3e { /* ti backlight ic*/
+		status = "ok";
+		compatible = "huawei,hw_sm5109","huawei,hw_ocp2131";
+		reg = <0x3e>;
+	  };
+};
+

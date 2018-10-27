@@ -1,0 +1,12 @@
+example for dts:
+		tas2560@4c {
+			compatible = "ti,tas2560";
+			reg = <0x4c>;
+			ti,reset-gpio = <&msmgpio 13 0>;
+			ti,irq-gpio = <&msmgpio 59 0>;
+			ti,pll = <0>; /* refer to tas2560.h for more details */
+			ti,asi-format = <0>; /* 0, i2S; 1, DSP;  */
+			ti,load = <0>; /* 0, 8Ohm; 1, 6Ohm; 2, 4Ohm */
+			ti,ppg = <0>; /* 0, 0dB default; 1， enable -2dB */
+			status = "ok";
+		};

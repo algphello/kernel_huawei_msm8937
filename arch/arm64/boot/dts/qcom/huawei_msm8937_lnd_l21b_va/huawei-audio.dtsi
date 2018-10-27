@@ -1,0 +1,101 @@
+
+/ {
+    huawei_audio_info {
+        compatible = "hw,hw_audio_info";
+        product-identifier = "london";
+        builtin-master-mic-exist;
+        builtin-second-mic-exist;
+        hand_held_dual_mic_strategy;
+        loud_speaker_second_mic_strategy;
+        audio-extpa-to-hphr; /* this node is used in HAL for product which ext pa connect to hphr */
+        voice-vol-level = <10>;
+        status = "ok";
+    };
+};
+
+/* delete node for wsa spk config of qcom */
+&i2c_2 {
+    /delete-node/ wsa881x-i2c-codec@e;
+    /delete-node/ wsa881x-i2c-codec@44;
+    /delete-node/ wsa881x-i2c-codec@f;
+    /delete-node/ wsa881x-i2c-codec@45;
+};
+
+&tlmm {
+      ext_spk_gpio_ctl {
+                ext_pa_gpio_line_sus:ext_pa_gpio_line_sus{
+                        mux {
+                                pins = "gpio47";
+                                function = "gpio";
+                        };
+                        config {
+                                pins = "gpio47";
+                                drive-strength = <8>;
+                                bias-disable;
+                                output-low;
+                        };
+                };
+                ext_pa_gpio_line_act:ext_pa_gpio_line_act{
+                        mux {
+                                pins = "gpio47";
+                                function = "gpio";
+                        };
+                        config {
+                                pins = "gpio47";
+                                drive-strength = <8>;
+                                bias-pull-down;
+                                output-high;
+                        };
+                };
+        };
+};
+
+&int_codec {
+    status = "okay";
+    /delete-property/ qcom,cdc-us-euro-gpios; /* There is no switch for US-EURO headsets */
+    /delete-property/ qcom,hdmi-dba-codec-rx; /* not support hdmi feature */
+    /delete-property/ asoc-wsa-codec-names;
+    /delete-property/ asoc-wsa-codec-prefixes;
+    /delete-property/ msm-vdd-wsa-switch-supply;
+    /delete-property/ qcom,msm-vdd-wsa-switch-voltage;
+    /delete-property/ qcom,msm-vdd-wsa-switch-current;
+
+    qcom,msm-micbias1-ext-cap; /* There is ext capacity for mic_bias1 on DEMO board */
+    qcom,msm-mbhc-hphl-swh = <1>;
+    qcom,msm-hs-micbias-type = "internal";
+    qcom,msm-spk-ext-pa = <&tlmm 47 0>;
+    qcom,msm-ext-pa = "primary";
+    qcom,spk-hs-turnoff-hph-bypass; /* this is used only for product which ext pa connect to hphr*/
+
+    qcom,msm-gpios =
+        "pri_i2s",
+        "ext_spk_gpio";
+    qcom,pinctrl-names =
+        "all_off",
+        "pri_i2s_act",
+        "ext_spk_gpio_active",
+        "pri_i2s_ext_spk_gpio_active";
+    pinctrl-names =
+        "all_off",
+        "pri_i2s_act",
+        "ext_spk_gpio_active",
+        "pri_i2s_ext_spk_gpio_active";
+    pinctrl-0 = <&cdc_pdm_lines_sus &cdc_pdm_lines_2_sus &ext_pa_gpio_line_sus>;
+    pinctrl-1 = <&cdc_pdm_lines_act &cdc_pdm_lines_2_act>;
+    pinctrl-2 = <&ext_pa_gpio_line_act>;
+    pinctrl-3 = <&cdc_pdm_lines_act &cdc_pdm_lines_2_act &ext_pa_gpio_line_act>;
+    /delete-property/ pinctrl-4;
+    /delete-property/ pinctrl-5;
+    /delete-property/ pinctrl-6;
+    /delete-property/ pinctrl-7;
+    qcom,audio-routing =
+        "RX_BIAS", "MCLK",
+        "SPK_RX_BIAS", "MCLK",
+        "INT_LDO_H", "MCLK",
+        "MIC BIAS External", "Handset Mic",
+        "MIC BIAS Internal2", "Headset Mic",
+        "MIC BIAS External", "Secondary Mic",
+        "AMIC1", "MIC BIAS External",
+        "AMIC2", "MIC BIAS Internal2",
+        "AMIC3", "MIC BIAS External";
+};

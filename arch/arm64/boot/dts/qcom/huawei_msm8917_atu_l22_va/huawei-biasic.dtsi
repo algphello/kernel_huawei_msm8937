@@ -1,0 +1,9 @@
+#include "../huawei_msm8937_i2c_atu.dtsi"
+&i2c_6 {
+	  ti@3e { /* ti backlight ic*/
+		status = "ok";
+		compatible = "huawei,hw_sm5109","huawei,hw_ocp2131";
+		reg = <0x3e>;
+	  };
+};
+

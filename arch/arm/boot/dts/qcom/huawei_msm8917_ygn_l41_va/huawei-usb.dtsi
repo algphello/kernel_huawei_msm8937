@@ -1,0 +1,18 @@
+/*remove type-c support*/
+&i2c_2 {
+	/delete-node/ pericom-type-c@1d;
+};
+
+&usb_otg{
+	qcom,hsusb-otg-mode = <3>;	/* enable otg mode */
+	vbus_otg-supply = <&smb1360_otg_supply>;
+	support-ext-id;
+	qcom,floated-charger-enable = <1>;
+	qcom,hsusb-otg-phy-init-seq = <0x44 0x80 0x6e 0x81 0x3d 0x82 0x13 0x83 0xffffffff>;
+	qcom,hsusb-otg-phy-init-seq-host = <0x44 0x80 0x65 0x81 0x3e 0x82 0x13 0x83 0xffffffff>;
+};
+
+&android_usb {
+	/*8917 does not support ipa ports*/
+	qcom,no-support-ipa;
+};

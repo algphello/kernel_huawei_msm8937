@@ -1,0 +1,9 @@
+/{
+		huawei_fac_info {
+		compatible = "huawei,hw_fac_info";
+		fac,product_name = "ATU-TL00";
+		fac,hardware_ver = "HL1ATUM";
+		fac,software_ver = "ATU_TL20_VB";
+		status = "ok";
+	};
+};

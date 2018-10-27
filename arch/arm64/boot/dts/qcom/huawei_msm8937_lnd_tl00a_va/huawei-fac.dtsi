@@ -1,0 +1,9 @@
+/{
+		huawei_fac_info {
+		compatible = "huawei,hw_fac_info";
+		fac,product_name = "LND-TL00";
+		fac,hardware_ver = "HL1LDNM";
+		fac,software_ver = "LND_TL00_VA";
+		status = "ok";
+	};
+};

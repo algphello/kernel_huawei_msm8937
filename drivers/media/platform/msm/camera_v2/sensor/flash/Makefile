@@ -1,0 +1,11 @@
+ccflags-y += -Idrivers/media/platform/msm/camera_v2/sensor/cci
+ccflags-y += -Idrivers/media/platform/msm/camera_v2
+ccflags-y += -Idrivers/media/platform/msm/camera_v2/common
+ccflags-y += -Idrivers/media/platform/msm/camera_v2/sensor/io
+ccflags-y += -Idrivers/media/platform/msm/camera_v2/sensor/flash/aw36413_lib
+ccflags-y += -Idrivers/media/platform/msm/camera_v2/sensor/flash/sy7806e_lib
+obj-$(CONFIG_MSMB_CAMERA) += msm_flash.o
+obj-$(CONFIG_MSMB_CAMERA) += msm_flash_i2c.o
+obj-$(CONFIG_MSMB_CAMERA) += msm_subflash.o
+obj-$(CONFIG_MSMB_CAMERA) += aw36413_lib/
+obj-$(CONFIG_MSMB_CAMERA) += sy7806e_lib/

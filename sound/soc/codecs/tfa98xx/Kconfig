@@ -1,0 +1,8 @@
+# NXP Smart Audio tfa98xx kernel driver
+# Needed I2C and I2S bus support.
+
+config SND_SOC_TFA98XX
+	tristate "Build NXP TFA98XX ASoC CODEC drivers"
+	depends on I2C
+	help
+	NXP Smart Audio tfa98xx kernel driver

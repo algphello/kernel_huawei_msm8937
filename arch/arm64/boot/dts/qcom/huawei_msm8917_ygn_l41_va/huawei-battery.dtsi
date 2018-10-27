@@ -1,0 +1,284 @@
+&tlmm {
+    smb_int_default: smb_int_default {
+        mux {
+            pins = "gpio126";
+            function = "gpio";
+        };
+        config {
+            pins = "gpio126";
+            num-grp-pins = <1>;
+            drive-strength = <2>;   /* 2 MA */
+            bias-pull-up;           /* PULL UP*/
+        };
+    };
+    mpp2_ctrl_default: mpp2_ctrl_default {
+        mux {
+            pins="gpio132";
+            function="gpio";
+        };
+        config {
+            pins="gpio132";
+            num-grp-pins=<1>;
+            drive-strength=<2>;
+            bias-pull-up;
+        };
+    };
+    mpp4_ctrl_default: mpp4_ctrl_default {
+        mux {
+            pins="gpio129";
+            function="gpio";
+        };
+        config {
+            pins="gpio129";
+            num-grp-pins=<1>;
+            drive-strength=<2>;
+            bias-pull-up;
+        };
+    };
+    usb_otg_int {
+        pins = "gpio46";
+        qcom,pin-func = <0>;
+        qcom,num-grp-pins = <1>;
+        lable = "usb_otg_int";
+
+        otg_int_active: active {
+            drive-strength = <2>;
+            bias-pull-up;
+        };
+        otg_int_suspend: suspend {
+            drive-strength = <2>;
+            bias-pull-up;
+        };
+    };
+};
+
+
+&pm8937_mpps{
+    mpp@a100 {
+        /* MPP2 - batteryid config */
+        reg = <0xa100 0x100>;
+        qcom,pin-num = <2>;
+        qcom,mode = <4>; /* AIN input */
+        qcom,invert = <1>; /* Enable MPP */
+        qcom,ain-route = <1>; /* AMUX 6 */
+        qcom,master-en = <1>;
+        qcom,src-sel = <0>; /* Function constant */
+    };
+};
+
+
+&pm8937_vadc{
+    cpu_mpp_number = <19>;
+    pa_mpp_number = <54>;
+    chan@11 {
+        label = "batt_id_uv";
+        reg = <0x11>;
+        qcom,decimation = <0>;
+        qcom,pre-div-channel-scaling = <0>;
+        qcom,calibration-type = "ratiometric";
+        qcom,scale-function = <0>;
+        qcom,hw-settle-time = <2>;//200us delay
+        qcom,fast-avg-setup = <2>;
+        /delete-property/qcom,vadc-thermal-node;
+    };
+    chan@36 {
+        label = "pa_therm0";
+        reg = <0x36>;
+        qcom,decimation = <0>;
+        qcom,pre-div-channel-scaling = <0>;
+        qcom,calibration-type = "ratiometric";
+        qcom,scale-function = <0>;
+        qcom,hw-settle-time = <2>;
+        qcom,fast-avg-setup = <0>;
+        /delete-property/qcom,vadc-thermal-node;
+    };
+
+    chan@13 {
+        qcom,scale-function = <0>; //convert raw adc code to voltage
+        /delete-property/qcom,vadc-thermal-node;
+    };
+};
+
+
+&rpm_bus{
+    rpm-regulator-ldoa16 {
+        status = "okay";
+        pm8917_l16: regulator-l16 {
+            regulator-name = "pm8917_l16";
+            regulator-min-microvolt = <1800000>;
+            regulator-max-microvolt = <1800000>;
+            qcom,init-voltage = <1800000>;
+            regulator-always-on;
+            status = "okay";
+        };
+    };
+    rpm-regulator-ldoa5 {
+        status = "okay";
+        pm8917_l5: regulator-l5 {
+            regulator-name = "pm8917_l5";
+            regulator-min-microvolt = <1800000>;
+            regulator-max-microvolt = <1800000>;
+            qcom,init-voltage = <1800000>;
+            regulator-always-on;
+            status = "okay";
+        };
+    };
+};
+
+&led_flash0{
+    /delete-property/qcom,flash-source;
+    /delete-property/qcom,torch-source ;
+    /delete-property/qcom,switch-source;
+};
+
+
+&spmi_bus {
+    /delete-node/qcom,pmi8937@2;
+    /delete-node/qcom,pmi8937@3;
+    qcom,pm8937@0 {
+        hw_device: huawei,hw_device@800 {
+            compatible="huawei,hw_device";
+            reg=<0x800 0x100>;
+        };
+    };
+};
+
+
+&i2c_2 {
+    cw2015@62 {
+        compatible = "cw2015";
+        reg = <0x62>;
+        cw,therm-adc=<&huawei_mpp2_adc>;
+        cw,therm-switch-mode=<1>;
+        cw,id-adc=<&huawei_mpp2_adc>;
+        cw,id-switch-mode=<0>;
+        cw,rpull-up-kohm = <68>;
+        cw,vref-batt-therm = <1800000>;
+        #include "../CWHB26A5I0EBC_ATL_SCUD-4v4-3000mah.dtsi"
+        #include "../CWHB26A5I0EBC_ATL_SWD-4v4-3000mah.dtsi"
+        #include "../CWHB26A5I0EBC_LG_DESAY-4v4-3000mah.dtsi"
+        #include "../CwHuawei_default_battery.dtsi"
+    };
+
+    smb1360_otg_supply: bq24157@6A {
+        compatible = "ti,bq24157";
+        reg = <0x6A>;
+        interrupt-parent = <&tlmm>;
+        interrupts = <126 3>;
+        pinctrl-names = "default";
+        pinctrl-0 = <&smb_int_default>;
+        gpio_int = <&tlmm 126 0x00>;
+        ti,current-limit = <1000>;
+        ti,weak-battery-voltage = <3200>;
+        ti,battery-regulation-voltage = <4400>;
+        ti,charge-current = <1250>;
+        ti,termination-current = <100>;
+        ti,resistor-sense = <68>;
+        regulator-name="bq24157_otg";
+    };
+};
+
+/{
+    huawei_charger: qcom,huawei_charger{
+        compatible = "huawei,charger";
+        status = "okay";
+        powerdown_anim_horizontal = "1";
+
+    };
+};
+
+/{
+    huawei_fuelguage: qcom,huawei_fuelguage{
+        compatible = "huawei,fuelguage";
+        fuelguage_type = "bms";
+        status = "okay";
+    };
+};
+
+/{
+    huawei_dsm_charger: huawei_dsm_charger{
+        compatible = "huawei,dsm_charger";
+        status = "ok";
+    };
+};
+
+/{
+    huawei_mpp2_adc: huawei_mpp2_adc {
+        compatible="huawei-vadc";
+        vadc-name="pmi-mpp2";
+        qcom,pmi-mpp2-vadc=<&pm8937_vadc>;
+        channel=<0x11>;
+        huawei,need_switch_enable;
+        pinctrl-names="default";
+        pinctrl-0=<&mpp2_ctrl_default>;
+        switch_gpio=<&tlmm 132 0x00>;
+        gpio-pu-regulator-supply=<&pm8917_l16>;
+        gpio-pd-regulator-supply=<&pm8917_l16>;
+        status="okay";
+    };
+
+    huawei_mpp4_adc: huawei_mpp4_adc {
+        compatible="huawei-vadc";
+        vadc-name="pmi-mpp4";
+        qcom,pmi-mpp4-vadc =<&pm8937_vadc>;
+        channel=<0x13>;
+        huawei,need_switch_enable;
+        pinctrl-names="default";
+        pinctrl-0=<&mpp4_ctrl_default>;
+        switch_gpio=<&tlmm 129 0x00>;
+        gpio-pu-regulator-supply=<&pm8917_l5>;
+        gpio-pd-regulator-supply=<&pm8917_l16>;
+        status="okay";
+    };
+
+    huawei_pa_adc: huawei_pa_adc {
+        compatible = "huawei-vadc";
+        status = "okay";
+        vadc-name = "pa_adc";
+        qcom,pa_adc-vadc = <&pm8937_vadc>;
+        channel = <0x36>;
+        regulator-supply = <&pm8917_l16>;
+    };
+
+    hw_otg_id {
+        compatible="huawei,usbotg-by-id";
+        otg-vadc=<&huawei_mpp4_adc>;
+        switch-mode=<1>;
+        otg-gpio=<&tlmm 46 0x00>;
+        interrupt-parent = <&tlmm>;
+        interrupts = <46 3>;
+        interrupt-names = "otg_irq";
+        pinctrl-names = "otg_active", "otg_suspend";
+        pinctrl-0 = <&otg_int_active>;
+        pinctrl-1 = <&otg_int_suspend>;
+    };
+};
+
+/{
+    huawei_battery: huawei_battery {
+        compatible = "huawei,battery";
+        status = "ok";
+        huawei,bus-type=<2>;
+        huawei,i2c-charger=<&smb1360_otg_supply>;
+        huawei,bms-psy-name = "bms";
+        huawei,bk_battery-psy-name = "bk_battery";
+        huawei,usb-psy-name = "usb";
+        huawei,fastchg-max-current = <2000>;
+        huawei,fastchg-max-voltage = <4400>;
+        huawei,fastchg-warm-current = <1400>;
+        huawei,fastchg-warm-voltage = <4100>;
+        huawei,fastchg-cool-current = <1200>;
+        huawei,fastchg-cool-voltage = <4400>;
+        huawei,usb-icl-max = <2000>;
+        huawei,customize-cool-lower-limit = <0>;
+        huawei,customize-cool-upper-limit = <50>;
+        huawei,fastchg-current-customize-cool-ma = <500>;
+        huawei,charger-batt-capacity-mah = <4400>;
+
+        huawei,dump-regs-num = <7>;
+        huawei,dump-regs = <
+            0x00 0x01 0x02 0x03 0x04 0x05 0x06
+        >;
+    };
+};
+

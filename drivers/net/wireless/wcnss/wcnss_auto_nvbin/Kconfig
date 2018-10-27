@@ -1,0 +1,3 @@
+config CONFIG_HUAWEI_WIFI
+	bool "Huawei auto load nv bin decoupled function support"
+    default n

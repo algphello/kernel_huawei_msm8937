@@ -1,0 +1,20 @@
+#
+# Huawei modem interface
+#
+config PIL_Q6V5_MSS
+        bool "Huawei modem interface"
+		depends on HUAWEI_KERNEL
+        help
+          Say y here to enable Huawei modem interface support. 
+
+config PIL_Q6V5_MSS_LOG
+        bool "Huawei modem crash log interface"
+		depends on PIL_Q6V5_MSS
+        help
+          Say y here to enable Huawei modem crash log interface support. 
+		  
+config PIL_Q6V5_MSS_CTL
+        tristate "Huawei modem ctl interface"
+		depends on PIL_Q6V5_MSS
+        help
+          Say y here to enable Huawei modem ctl interface support. 

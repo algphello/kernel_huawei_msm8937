@@ -1,0 +1,5 @@
+config HW_KHARDEN_DEBUG
+	bool "Kernel harden test support"
+	default n
+	help
+	  Say yes here to support the kernel harden debug

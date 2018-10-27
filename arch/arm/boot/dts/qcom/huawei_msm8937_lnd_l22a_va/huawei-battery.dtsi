@@ -1,0 +1,158 @@
+&mtp_batterydata {
+	qcom,batt-id-range-pct = <15>;
+
+	qcom,itech-3000mah {
+		qcom,batt-id-kohm = <2000>;
+		qcom,max-voltage-uv = <4400000>;
+		qcom,fg-cc-cv-threshold-mv = <4380>;
+	};
+	#include "../HB366481ECW_ATL_Scud_4v4_3000mAh.dtsi"
+	#include "../HB366481ECW_ATL_SWD_4v4_3000mAh.dtsi"
+	#include "../HB366481ECW_ATL_Desay_4v4_3000mAh.dtsi"
+	#include "../Huawei_default_battery.dtsi"
+};
+
+&pmi8940_charger {
+    qcom,battery-psy-name="bk_battery";
+	/* jeita parameters */
+	qcom,jeita-temp-hard-limit = <1>;
+	qcom,fastchg-current-batt-warm = <1400>;
+	qcom,fastchg-current-batt-cool = <1200>;
+	qcom,fastchg-current-customize-cool = <400>;
+	qcom,customize-cool-lower-limit = <0>;
+	qcom,customize-cool-upper-limit = <50>;
+	qcom,vfloat-batt-warm = <4100>;
+	qcom,float-voltage-comp = <16>;
+	qcom,charger-batt-capacity-mah = <4000000>;
+};
+
+&pmi8940_fg {
+	/* Using external sense */
+	qcom,ext-sense-type;
+	/* set Beta value */
+	qcom,thermal-coefficients = [c2 86 bb 50 cf 37];
+	/* set temp range thershold */
+	qcom,warm-bat-decidegc = <450>;
+	qcom,cool-bat-decidegc = <100>;
+	qcom,hot-bat-decidegc = <500>;
+	qcom,cold-bat-decidegc = <0>;
+	qcom,resume-soc = <99>;
+	qcom,resume-soc-raw = <253>;
+	qcom,fg-cutoff-voltage-mv = <3250>;
+	qcom,fg-iterm-ma = <200>;
+	qcom,fg-chg-iterm-ma = <120>;
+	qcom,fg-memif@4400 {
+		qcom,cold-hot-jeita-hysteresis = <20 20>;
+	};
+};
+
+/{
+	huawei_charger: qcom,huawei_charger{
+		compatible = "huawei,charger";
+		status = "okay";
+	};
+};
+
+/{
+	huawei_dsm_charger: huawei_dsm_charger{
+		compatible = "huawei,dsm_charger";
+		status = "ok";
+		qcom,fg-use-coul = <1>;
+		qcom,dsm_cold_bat_degree = <0>;
+		qcom,dsm_cool_bat_degree = <100>;
+		qcom,dsm_imaxma_cool_bat = <870>;
+		qcom,dsm_vmaxmv_cool_bat = <4400>;
+		qcom,dsm_customize_cool_bat_degree = <50>;
+		qcom,dsm_imaxma_customize_cool_bat = <500>;
+		qcom,dsm_warm_bat_degree = <450>;
+		qcom,dsm_imaxma_warm_bat = <1015>;
+		qcom,dsm_vmaxmv_warm_bat = <4100>;
+		qcom,dsm_hot_bat_degree = <500>;
+		qcom,dsm_iv_range_raise_pct = <20>;
+	};
+};
+
+&pm8937_vadc {
+	chg_mpp_number = <17>;
+	cpu_mpp_number = <19>;
+	pa_mpp_number = <54>;
+
+	chan@11 {
+		label = "chg_therm";
+		qcom,scale-function = <0>;
+		/delete-property/qcom,vadc-thermal-node;
+	};
+	chan@13 {
+		label = "msm_therm";
+		qcom,scale-function = <0>;
+		/delete-property/qcom,vadc-thermal-node;
+	};
+	chan@36 {
+		qcom,scale-function = <0>;
+		/delete-property/qcom,vadc-thermal-node;
+	};
+};
+/{
+    hw_chg_adc: hw_chg_adc {
+        compatible="huawei-vadc";
+        vadc-name="pmi-mpp2";
+        qcom,pmi-mpp2-vadc=<&pm8937_vadc>;
+        channel=<0x11>;
+        regulator-supply = <&pm8937_l16>;
+        status="okay";
+    };
+
+    hw_msm_adc: hw_msm_adc {
+        compatible="huawei-vadc";
+        vadc-name="pmi-mpp4";
+        qcom,pmi-mpp4-vadc =<&pm8937_vadc>;
+        channel=<0x13>;
+        regulator-supply = <&pm8937_l16>;
+        status="okay";
+    };
+
+    hw_pa_adc: hw_pa_adc {
+        compatible = "huawei-vadc";
+        status = "okay";
+        vadc-name = "pa_adc";
+        qcom,pa_adc-vadc = <&pm8937_vadc>;
+        channel = <0x36>;
+        regulator-supply = <&pm8937_l16>;
+    };
+
+    huawei_battery: huawei_battery {
+        compatible = "huawei,battery";
+        status = "ok";
+        huawei,bus-type=<1>;
+        huawei,spmi-charger = <&pmi8940_charger>;
+        huawei,bms-psy-name = "bms";
+        huawei,bk_battery-psy-name = "bk_battery";
+        huawei,usb-psy-name = "usb";
+        huawei,fastchg-max-current = <2000>;
+        huawei,fastchg-max-voltage = <4400>;
+        huawei,fastchg-warm-current = <1015>;
+        huawei,fastchg-warm-voltage = <4100>;
+        huawei,fastchg-cool-current = <870>;
+        huawei,fastchg-cool-voltage = <4400>;
+        huawei,usb-icl-max = <2000>;
+        huawei,customize-cool-lower-limit = <0>;
+        huawei,customize-cool-upper-limit = <50>;
+        huawei,fastchg-current-customize-cool-ma = <500>;
+
+        huawei,dump-regs-num = <37>;
+        huawei,dump-regs = <
+            0x2100C 0x2100D 0x2100E 0x21010 0x21015
+            0x21018 0x210F1 0x210F2 0x210F4 0x210F6
+            0x210F8 0x210FA 0x210FC 0x21108 0x21208
+            0x21210 0x21215 0x21218 0x21242 0x212F3
+            0x21307 0x21308 0x21309 0x21310 0x21315
+            0x21318 0x2130D 0x21340 0x213F1 0x213F2
+            0x213F3 0x213F4 0x213F5 0x21408 0x21608
+            0x21610 0x216F5
+        >;
+
+        huawei,jeita-use-interrupt;
+        huawei,jeita-hardware-charge-disable;
+        huawei,jeita-hardware-charge-disable-reg = <0x210FA 0x20 0x20>;
+    };
+};

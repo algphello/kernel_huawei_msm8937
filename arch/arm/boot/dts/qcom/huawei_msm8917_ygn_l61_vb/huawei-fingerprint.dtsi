@@ -1,0 +1,19 @@
+&spi_7 {
+	status = "ok";
+	fingerprint@0 {
+		compatible = "fpc,fingerprint";
+		reg = <0>;
+		interrupt-parent = <&tlmm>;
+		spi-max-frequency = <5000000>;
+		interrupts = <12 0x0>;
+		fingerprint,irq_gpio = <&tlmm 12 0>;
+		fingerprint,reset_gpio = <&tlmm 68 0>;
+		fingerprint,navigation_adjust1 = <0>;
+		fingerprint,navigation_adjust2 = <180>;
+		vdd-supply = <&pm8917_l6>;
+		fingerprint,vdd = "vdd";
+		avdd-supply = <&pm8917_l10>;
+		fingerprint,avdd = "avdd";
+		status = "ok";
+	};
+};

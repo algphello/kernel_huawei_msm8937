@@ -1,0 +1,36 @@
+/*
+ * Copyright (c) 2016, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/dts-v1/;
+#include "huawei_msm8917_base.dtsi"
+#include "lcdkit/ygn_l61_vb/devkit_lcd.dtsi"
+#include "lcdkit/default/devkit_lcd.dtsi"
+#include "huawei_msm8917_ygn_l61_vb/huawei.dtsi"
+/ {
+	model = "Qualcomm Technologies, Inc. MSM8917-PMI8937 MTP";
+	compatible = "qcom,msm8917-mtp", "qcom,msm8917", "qcom,mtp";
+	qcom,board-id= <8282 0>;
+	huawei,modem_id = <0xF9B0010C 0x0>;
+};
+&rpm_bus {
+	rpm-regulator-ldoa6 {
+		pm8917_l6: regulator-l6 {
+			regulator-always-on;
+		};
+	};
+	rpm-regulator-ldoa10 {
+		pm8917_l10: regulator-l10 {
+			regulator-always-on;
+		};
+	};
+};

@@ -1,0 +1,22 @@
+
+ifeq ($(CONFIG_WIFI_WAKE_SRC),y)
+HAVE_WIFI_WAKE_SRC := 1
+else
+HAVE_WIFI_WAKE_SRC := 0
+endif
+
+############ HDD ############
+HDD_INC += 	-I$(WLAN_ROOT)/QCOM_DRV_DECOUPLED/CORE/HDD/src \
+		-I$(WLAN_ROOT)/QCOM_DRV_DECOUPLED/CORE/HDD/inc
+
+HDD_OBJS += QCOM_DRV_DECOUPLED/CORE/HDD/src/drv_auto_nv_bin.o
+
+HDD_OBJS += QCOM_DRV_DECOUPLED/CORE/HDD/src/hw_wifi_buildin.o
+HDD_OBJS += QCOM_DRV_DECOUPLED/CORE/HDD/src/hw_wifi_mac.o
+ifeq ($(HAVE_WIFI_WAKE_SRC),1)
+HDD_OBJS +=	QCOM_DRV_DECOUPLED/CORE/HDD/src/hw_wifi.o
+endif
+
+############ VOSS ############
+VOSS_INC += 	-I$(WLAN_ROOT)/QCOM_DRV_DECOUPLED/CORE/VOSS/src
+VOSS_OBJS += QCOM_DRV_DECOUPLED/CORE/VOSS/src/vos_auto_nv_bin.o

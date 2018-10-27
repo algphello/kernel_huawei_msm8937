@@ -1,0 +1,9 @@
+/{
+		huawei_fac_info {
+		compatible = "huawei,hw_fac_info";
+		fac,product_name = "LND-AL30";
+		fac,hardware_ver = "HL2LNDM";
+		fac,software_ver = "LND_AL30B_VA";
+		status = "ok";
+	};
+};

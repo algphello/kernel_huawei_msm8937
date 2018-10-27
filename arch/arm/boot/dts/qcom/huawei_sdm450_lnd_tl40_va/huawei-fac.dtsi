@@ -1,0 +1,9 @@
+/{
+		huawei_fac_info {
+		compatible = "huawei,hw_fac_info";
+		fac,product_name = "LND-TL30";
+		fac,hardware_ver = "HL3LNDM";
+		fac,software_ver = "LND_TL40_VA";
+		status = "ok";
+	};
+};

@@ -1,0 +1,69 @@
+/*
+ * Copyright (c) 2016, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/dts-v1/;
+#include "huawei_sdm450_base.dtsi"
+#include "lcdkit/lnd_al30b_va/devkit_lcd.dtsi"
+#include "lcdkit/default/devkit_lcd.dtsi"
+#include "huawei_sdm450_lnd_al30b_va/huawei.dtsi"
+/ {
+	model = "Qualcomm Technologies, Inc. LND-AL30B";
+	compatible = "qcom,sdm450-qrd", "qcom,sdm450", "qcom,qrd";
+	qcom,board-id= <8240 0>;
+	qcom,pmic-id = <0x10016 0x20011 0x0 0x0>;
+	huawei,modem_id = <0xF7FC011E 0x0>;
+};
+&mdss_dsi0_pll {
+	/delete-property/ qcom,dsi-pll-ssc-en;
+	/delete-property/ qcom,dsi-pll-ssc-mode;
+};
+&pmx_mdss {
+		mdss_dsi_active: mdss_dsi_active {
+			mux {
+				pins = "gpio61";
+				function = "gpio";
+			};
+
+			config {
+				pins = "gpio61";
+				drive-strength = <8>; /* 8 mA */
+				bias-disable = <0>; /* no pull */
+				output-high;
+			};
+		};
+
+		mdss_dsi_suspend: mdss_dsi_suspend {
+			mux {
+				pins = "gpio61";
+				function = "gpio";
+			};
+
+			config {
+				pins = "gpio61";
+				drive-strength = <2>; /* 2 mA */
+				bias-pull-down; /* pull down */
+			};
+		};
+};
+&rpm_bus {
+	rpm-regulator-ldoa6 {
+		pm8953_l6: regulator-l6 {
+			regulator-always-on;
+		};
+	};
+	rpm-regulator-ldoa10 {
+		pm8953_l10: regulator-l10 {
+			regulator-always-on;
+		};
+	};
+};

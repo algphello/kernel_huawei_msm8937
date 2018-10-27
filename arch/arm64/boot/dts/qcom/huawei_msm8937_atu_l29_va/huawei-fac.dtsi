@@ -1,0 +1,10 @@
+/{
+		huawei_fac_info {
+		compatible = "huawei,hw_fac_info";
+		fac,product_name = "ATU-L29";
+		fac,hardware_ver = "HL1ATUM";
+		fac,software_ver = "ATU_L29_VA";
+		fac,simcard_adapt = "support";
+		status = "ok";
+	};
+};

@@ -1,0 +1,9 @@
+/{
+		huawei_fac_info {
+		compatible = "huawei,hw_fac_info";
+		fac,product_name = "YGN-AL00";
+		fac,hardware_ver = "HL1YNGM";
+		fac,software_ver = "YGN_AL00B_VA";
+		status = "ok";
+	};
+};

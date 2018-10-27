@@ -1,0 +1,10 @@
+/{
+		huawei_fac_info {
+		compatible = "huawei,hw_fac_info";
+		fac,product_name = "YGN-L61";
+		fac,hardware_ver = "HL1YNGM";
+		fac,software_ver = "YGN_L61B_VA";
+		fac,simcard_adapt = "support";
+		status = "ok";
+	};
+};

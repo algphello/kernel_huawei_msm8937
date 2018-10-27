@@ -1,0 +1,9 @@
+config HUAWEI_QCOM_DECOUPLED
+bool "huawei qcom kernel driver net decoupled"
+default n
+help
+ choose y to open huawei qcom kernel driver net decoupled
+
+if HUAWEI_QCOM_DECOUPLED
+source "drivers/net/wireless/drv_net_decoupled/wireless/Kconfig"
+endif
