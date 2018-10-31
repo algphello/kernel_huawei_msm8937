@@ -46,9 +46,9 @@ deploy:
   file: $KERNEL_DIR/arch/arm64/boot/Image.gz-dtb
   
   on:
-    tags: false
+    tags: true
     repo: ALGPHELLO/kernel_huawei_msm8937
-    branch: master
+    branch: oreo
 
 branches:
   except:
