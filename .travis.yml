@@ -1,49 +1,50 @@
-os: linux
-
-dist: xenial
-
-sudo: required
-
-git:
-  depth: 3
+language: c
+#######################################################################################
+os:
+  - linux
+  
+sudo: enabled
 
 addons:
   apt:
-    update:
-     - true
+    packages:
+      - curl
+
+#######################################################################################
+
 
 before_install:
+
+  - sudo apt-get update -qq
   
   - git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 ~/aarch64-linux-android-4.9/
-  - sudo chmod -R a+x ~/aarch64-linux-android-4.9/*
+  
+  - sudo chmod -R a+x *
 
-install: true
+#######################################################################################
 
 
 script:  
-  - export CROSS_COMPILE=~/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+  
   - export ARCH=arm64
-  - export KBUILD_BUILD_USER="ALGPHELLO"
-  - export KBUILD_BUILD_HOST="fujitsu"
-  - make ARCH=arm64 merge_msm8937_64_defconfig
-  - make ARCH=arm64 Image.gz-dtb
-  - KERNEL_DIR=$PWD
+  - export CROSS_COMPILE=~/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+  - KERNEL_DIR=$PWD/kernel_huawei_msm8937
   - ZIMAGE=$KERNEL_DIR/arch/arm64/boot/Image.gz-dtb
-
+  - make clean
+  - make mrproper
+  - make merge_msm8937_64_defconfig
+  - make -j16
+  #- make k5fpr_defconfig 
   #- bash mohan.sh
   #- make -j16
   #- make ARCH=arm64 -j16 clean mrproper
 
 after_success:
-  - cd $KERNEL_DIR
   - curl --upload-file arch/arm64/boot/Image.gz-dtb https://transfer.sh/kernel_huawei_msm8937
-  
 deploy:
   skip_cleanup: true
   provider: releases
   api_key: "$GitOAUTHToken_KERNEL"
-  file_glob: true
-  file: $KERNEL_DIR/arch/arm64/boot/Image.gz-dtb
   
   on:
     tags: true
@@ -53,3 +54,4 @@ deploy:
 branches:
   except:
 - /^(?i:untagged)-.*$/
+
