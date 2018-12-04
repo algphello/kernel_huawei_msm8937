@@ -1,25 +1,16 @@
 os: linux
-
 dist: xenial
-
 sudo: required
-
 git:
   depth: 3
-
 addons:
   apt:
     update:
      - true
-
 before_install:
-  
   - git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 ~/aarch64-linux-android-4.9/
   - sudo chmod -R a+x ~/aarch64-linux-android-4.9/*
-
 install: true
-
-
 script:  
   - export CROSS_COMPILE=~/aarch64-linux-android-4.9/bin/aarch64-linux-android-
   - export ARCH=arm64
@@ -29,27 +20,19 @@ script:
   - make ARCH=arm64 Image.gz-dtb
   - KERNEL_DIR=$PWD
   - ZIMAGE=$KERNEL_DIR/arch/arm64/boot/Image.gz-dtb
-
-  #- bash mohan.sh
-  #- make -j16
-  #- make ARCH=arm64 -j16 clean mrproper
-
 after_success:
   - cd $KERNEL_DIR
   - curl --upload-file arch/arm64/boot/Image.gz-dtb https://transfer.sh/kernel_huawei_msm8937
-  
 deploy:
   skip_cleanup: true
   provider: releases
   api_key: "$GitOAUTHToken_KERNEL"
   file_glob: true
   file: $KERNEL_DIR/arch/arm64/boot/Image.gz-dtb
-  
   on:
     tags: false
     repo: ALGPHELLO/kernel_huawei_msm8937
     branch: master
-
 branches:
   except:
 - /^(?i:untagged)-.*$/
