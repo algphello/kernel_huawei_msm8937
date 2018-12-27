@@ -1,4 +1,3 @@
-dist: xenial
 sudo: required
 git:
   depth: 3
