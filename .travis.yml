@@ -9,8 +9,7 @@ addons:
 install: true
 before_script:
   - cd $HOME && mkdir ndk
-  - wget -q https://dl.google.com/android/repository/android-ndk-r18b-linux-x86_64.zip 
--O $HOME/ndk.zip
+  - wget -q https://dl.google.com/android/repository/android-ndk-r18b-linux-x86_64.zip -O $HOME/ndk.zip
   - unzip ndk.zip --directory $HOME/ndk/ && rm ndk.zip
   - cd $HOME/ndk/ && git clone https://github.com/ALGPHELLO/kernel_huawei_msm8937.git kernel
   - sudo chmod -R a+x *
