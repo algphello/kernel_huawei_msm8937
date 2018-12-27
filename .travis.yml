@@ -1,4 +1,3 @@
-os: linux
 dist: xenial
 sudo: required
 git:
@@ -7,28 +6,33 @@ addons:
   apt:
     update:
      - true
-before_install:
-  - git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 ~/aarch64-linux-android-4.9/
-  - sudo chmod -R a+x ~/aarch64-linux-android-4.9/*
 install: true
+before_script:
+  - cd $HOME && mkdir ndk
+  - wget -q https://dl.google.com/android/repository/android-ndk-r18b-linux-x86_64.zip 
+	-O $HOME/ndk.zip
+  - unzip ndk.zip --directory $HOME/ndk/ && rm ndk.zip
+  - cd $HOME/ndk/ && git clone https://github.com/ALGPHELLO/kernel_huawei_msm8937.git kernel
+  - sudo chmod -R a+x *
 script:  
-  - export CROSS_COMPILE=~/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+  - export CROSS_COMPILE=$HOME/ndk/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-
   - export ARCH=arm64
   - export KBUILD_BUILD_USER="ALGPHELLO"
   - export KBUILD_BUILD_HOST="fujitsu"
+  - cd $HOME/ndk/kernel
   - make ARCH=arm64 merge_msm8937_64_defconfig
   - make ARCH=arm64 Image.gz-dtb
-  - KERNEL_DIR=$PWD
-  - ZIMAGE=$KERNEL_DIR/arch/arm64/boot/Image.gz-dtb
+  - KERNEL_DIR=$HOME/ndk/kernel
+  - ZIMAGE=$KERNEL_DIR/arch/arm64/boot/*Image*
 after_success:
   - cd $KERNEL_DIR
-  - curl --upload-file arch/arm64/boot/Image.gz-dtb https://transfer.sh/kernel_huawei_msm8937
+  - cp $HOME/ndk/kernel/arch/arm64/boot/Image.gz-dtb $HOME/ndk/kernel
 deploy:
   skip_cleanup: true
   provider: releases
   api_key: "$GitOAUTHToken_KERNEL"
   file_glob: true
-  file: $KERNEL_DIR/arch/arm64/boot/Image.gz-dtb
+  file: $KERNEL_DIR/arch/arm64/boot/*Image*
   on:
     tags: false
     repo: ALGPHELLO/kernel_huawei_msm8937
