@@ -10,8 +10,8 @@ before_script:
   - cd $HOME && mkdir ndk
   - wget -q https://dl.google.com/android/repository/android-ndk-r18b-linux-x86_64.zip -O $HOME/ndk.zip
   - unzip ndk.zip --directory $HOME/ndk/ && rm ndk.zip
-  - cd $HOME/ndk/ && git clone https://github.com/ALGPHELLO/kernel_huawei_msm8937.git kernel
-  - rm -rf prebuilts/clang/host/linux-x86 && git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 prebuilts/clang/host/linux-x86 -b android-8.0.0_r21 --depth=1
+  - cd $HOME/ndk/ && git clone https://github.com/algphello/kernel_huawei_msm8937.git kernel
+  - rm -rf prebuilts/clang/host/linux-x86 && git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 prebuilts/clang/host/linux-x86 -b android-8.0.0_r31 --depth=1
   - sudo chmod -R a+x *
 script:  
   - export CROSS_COMPILE=$HOME/ndk/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-
@@ -19,7 +19,8 @@ script:
   - export KBUILD_BUILD_USER="ALGPHELLO"
   - export KBUILD_BUILD_HOST="fujitsu"
   - cd $HOME/ndk/kernel
-  - make ARCH=arm64 merge_msm8937_64_defconfig
+  #- make ARCH=arm64 merge_msm8937_64_defconfig
+  - make ARCH=arm64 msmcortex_defconfig
   - make ARCH=arm64 Image.gz-dtb
   - KERNEL_DIR=$HOME/ndk/kernel
   - ZIMAGE=$KERNEL_DIR/arch/arm64/boot/*Image*
@@ -34,7 +35,7 @@ deploy:
   file: $KERNEL_DIR/arch/arm64/boot/*Image*
   on:
     tags: false
-    repo: ALGPHELLO/kernel_huawei_msm8937
+    repo: algphello/kernel_huawei_msm8937
     branch: master
 branches:
   except:
