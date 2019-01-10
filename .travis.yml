@@ -1,3 +1,5 @@
+git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86
+
 language: c
 os:
   - linux
@@ -18,14 +20,14 @@ script:
   
   - export ARCH=arm64
   - export CC=clang
-  - export CLANG_TRIPLE=~/clang/bin/clang/aarch64-linux-gnu-
+  - export CLANG_TRIPLE=~/clang/bin/clang/clang-4679922/bin/llvm-
   - export CROSS_COMPILE=~/aarch64-linux-android-4.9/bin/aarch64-linux-android-
   - KERNEL_DIR=$PWD/kernel_huawei_msm8937
   - IMAGE=$KERNEL_DIR/arch/arm64/boot/Image.gz-dtb
   - make ARCH=arm64 msm-perf_defconfig
   - make -j$(nproc --all) ARCH=arm64 \ 
-                      CC="~/clang/bin/clang" \
-                      CLANG_TRIPLE=aarch64-linux-gnu- \
+                      CC="~/clang/clang-4679922/bin/clang" \
+                      CLANG_TRIPLE=llvm- \
                       CROSS_COMPILE="~/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
 after_success:
   - curl --upload-file arch/arm64/boot/Image.gz-dtb https://transfer.sh/Image.gz-dtb
