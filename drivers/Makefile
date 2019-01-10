@@ -182,7 +182,7 @@ obj-$(CONFIG_HUAWEI_FACTORY_INFO) += hw_fac_info/
 
 obj-$(CONFIG_HUAWEI_DEV_DETECT)  += dev_detect/
 obj-$(CONFIG_HW_WIFIPRO)       += hwnet/
-obj-$(CONFIG_PRONTO_WLAN)      += ../../../vendor/qcom/opensource/wlan/prima/
+obj-$(CONFIG_PRONTO_WLAN)      += ../vendor/qcom/opensource/wlan/prima/
 obj-$(CONFIG_HUAWEI_TS_KIT) += devkit/tpkit/
 obj-$(CONFIG_SRECORDER)     += srecorder/
 
