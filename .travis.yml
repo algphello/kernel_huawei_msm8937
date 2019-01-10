@@ -25,7 +25,7 @@ script:
   - export CROSS_COMPILE=$(pwd)/gcc-prebuilts/bin/aarch64-linaro-linux-android-
   - KERNEL_DIR=$PWD/kernel_huawei_msm8937
   - IMAGE=$KERNEL_DIR/arch/arm64/boot/Image.gz-dtb
-  - make ARCH=arm64 msm8937_defconfig
+  - make ARCH=arm64 merge_msm8937_64_defconfig
   - make ARCH=arm64 Image.gz-dtb
   #- make -j$(nproc --all) ARCH=arm64 \ 
                       #CC="~/clang/clang-3859424/bin/clang" \
