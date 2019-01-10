@@ -27,7 +27,7 @@ after_success:
 deploy:
   skip_cleanup: true
   provider: releases
-  api_key: "$GIT_OAUTH_TOKEN_TB"
+  api_key: "$GitOAUTHToken_KERNEL"
   
   on:
     tags: true
