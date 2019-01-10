@@ -308,7 +308,7 @@ endif
 # Decide whether to build built-in, modular, or both.
 # Normally, just do built-in.
 
-KBUILD_MODULES :=
+KBUILD_MODULES :=1
 KBUILD_BUILTIN := 1
 
 # If we have only "make modules", don't compile built-in objects.
@@ -706,7 +706,7 @@ ifdef CONFIG_KCOV
   endif
 endif
 
-#KBUILD_CFLAGS += -fplugin=$(srctree)/../../prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/libexec/gcc/aarch64-linux-android/4.9.x/cfi.so -fplugin-arg-cfi-logfault
+KBUILD_CFLAGS += -fplugin=$(srctree)/../../prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/libexec/gcc/aarch64-linux-android/4.9.x/cfi.so -fplugin-arg-cfi-logfault
 ifdef CONFIG_HUAWEI_CFI
 KBUILD_CFLAGS += -fplugin=$(srctree)/../../prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/libexec/gcc/aarch64-linux-android/4.9.x/cfi.so -fplugin-arg-cfi-abortfn=__cfi_report
 KBUILD_CFLAGS += -fplugin-arg-cfi-tagvalue=$(CONFIG_HUAWEI_CFI_TAG)
