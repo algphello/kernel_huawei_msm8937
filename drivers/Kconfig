@@ -236,7 +236,7 @@ source "drivers/hw_devices/Kconfig"
 
 source "drivers/hwnet/Kconfig"
 
-source "drivers/../../../vendor/qcom/opensource/wlan/prima/Kconfig"
+source "drivers/../vendor/qcom/opensource/wlan/prima/Kconfig"
 
 source "drivers/cpuload/Kconfig"
 
