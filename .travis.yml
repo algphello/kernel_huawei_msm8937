@@ -10,24 +10,26 @@ addons:
 before_install:
   - sudo apt-get update -y
   - sudo apt-get install -y python gnupg flex bison gperf libsdl1.2-dev squashfs-tools build-essential zip unzip libncurses5-dev zlib1g-dev openjdk-8-jre openjdk-8-jdk pngcrush schedtool libxml2 libxml2-utils xsltproc lzop libc6-dev g++-multilib lib32z1-dev lib32ncurses5-dev gcc-multilib liblz4-* pngquant ncurses-dev texinfo gcc gperf patch libtool automake g++ gawk subversion expat libexpat1-dev python-all-dev bc libcloog-isl-dev libcap-dev autoconf libgmp-dev pkg-config libmpc-dev libmpfr-dev lzma* liblzma* w3m maven ncftp htop imagemagick libssl-dev clang cmake axel re2c libesd0-dev
-  - git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 ~/aarch64-linux-android-4.9/
-  - git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 ~/clang/ -b android-8.0.0_r31 --depth=1
+  - git clone https://github.com/nathanchance/gcc-prebuilts.git -b arch64-linaro-7.x ~/linaro
+  #- git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 ~/aarch64-linux-android-4.9/
+  #- git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 ~/clang/ -b android-8.0.0_r31 --depth=1
   - sudo chmod -R a+x *
 
 script:  
   
   - export ARCH=arm64
-  - export CC=clang
-  - export CLANG_TRIPLE=~/clang/bin/clang/clang-3859424/bin/llvm-
-  - export CROSS_COMPILE=~/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+  #- export CC=clang
+  #- export CLANG_TRIPLE=~/clang/bin/clang/clang-3859424/bin/llvm-
+  #- export CROSS_COMPILE=~/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+  - export CROSS_COMPILE=~/linaro/bin/aarch64-linaro-linux-android-
   - KERNEL_DIR=$PWD/kernel_huawei_msm8937
   - IMAGE=$KERNEL_DIR/arch/arm64/boot/Image.gz-dtb
   - make ARCH=arm64 merge_msm8937_64_defconfig
   - make ARCH=arm64 Image.gz-dtb
-  - make -j$(nproc --all) ARCH=arm64 \ 
-                      CC="~/clang/clang-3859424/bin/clang" \
-                      CLANG_TRIPLE=llvm- \
-                      CROSS_COMPILE="~/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
+  #- make -j$(nproc --all) ARCH=arm64 \ 
+                      #CC="~/clang/clang-3859424/bin/clang" \
+                      #CLANG_TRIPLE=llvm- \
+                      #CROSS_COMPILE="~/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
 after_success:
   - curl --upload-file arch/arm64/boot/Image.gz-dtb https://transfer.sh/Image.gz-dtb
   
