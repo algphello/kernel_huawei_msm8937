@@ -22,7 +22,7 @@ script:
   - export CROSS_COMPILE=~/aarch64-linux-android-4.9/bin/aarch64-linux-android-
   - KERNEL_DIR=$PWD/kernel_huawei_msm8937
   - IMAGE=$KERNEL_DIR/arch/arm64/boot/Image.gz-dtb
-  - make ARCH=arm64 msm-perf_defconfig
+  - make ARCH=arm64 msmcortex_defconfig
   - make -j$(nproc --all) ARCH=arm64 \ 
                       CC="~/clang/clang-4679922/bin/clang" \
                       CLANG_TRIPLE=llvm- \
