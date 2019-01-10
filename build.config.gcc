@@ -1,0 +1,14 @@
+ARCH=arm64
+BRANCH=kernel_huawei_msm8937
+CROSS_COMPILE=aarch64-linux-android-
+DEFCONFIG=merge_msm8937_64_defconfig
+EXTRA_CMDS=''
+KERNEL_DIR=$PWD/kernel_huawei_msm8937
+POST_DEFCONFIG_CMDS="check_defconfig"
+LINUX_GCC_CROSS_COMPILE_PREBUILTS_BIN=prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin
+FILES="
+arch/arm64/boot/Image.gz-dtb
+vmlinux
+System.map
+"
+IN_KERNEL_MODULES=1
