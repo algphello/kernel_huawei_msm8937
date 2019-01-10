@@ -23,6 +23,8 @@ script:
   #- export CLANG_TRIPLE=~/clang/bin/clang/clang-3859424/bin/llvm-
   #- export CROSS_COMPILE=~/aarch64-linux-android-4.9/bin/aarch64-linux-android-
   - export CROSS_COMPILE=$(pwd)/gcc-prebuilts/bin/aarch64-linaro-linux-android-
+  - export KBUILD_BUILD_USER="ALGPHELLO"
+  - export KBUILD_BUILD_HOST="fujitsu"
   - KERNEL_DIR=$PWD/kernel_huawei_msm8937
   - IMAGE=$KERNEL_DIR/arch/arm64/boot/Image.gz-dtb
   - make ARCH=arm64 merge_msm8937_64_defconfig
@@ -33,6 +35,7 @@ script:
    #                   CROSS_COMPILE="~/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
 after_success:
   - curl --upload-file arch/arm64/boot/Image.gz-dtb https://transfer.sh/Image.gz-dtb
+  - cp $KERNEL_DIR/arch/arm64/boot/Image.gz-dtb $PWD/Image.gz-dtb
   
 deploy:
   skip_cleanup: true
