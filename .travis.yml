@@ -1,6 +1,4 @@
 sudo: required
-git:
-  depth: 3
 addons:
   apt:
     update:
