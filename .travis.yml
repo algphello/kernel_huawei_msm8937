@@ -1,7 +1,7 @@
-language: c
-os:
-  - linux
-sudo: enabled
+dist: xenial
+sudo: required
+git:
+  depth: 3
 addons:
   apt:
     packages:
