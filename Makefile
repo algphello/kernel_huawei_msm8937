@@ -706,14 +706,14 @@ ifdef CONFIG_KCOV
   endif
 endif
 
-#KBUILD_CFLAGS += -fplugin=$(srctree)/../../prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/libexec/gcc/aarch64-linux-android/4.9.x/cfi.so -fplugin-arg-cfi-logfault
-#ifdef CONFIG_HUAWEI_CFI
-#KBUILD_CFLAGS += -fplugin=$(srctree)/../../prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/libexec/gcc/aarch64-linux-android/4.9.x/cfi.so -fplugin-arg-cfi-abortfn=__cfi_report
-#KBUILD_CFLAGS += -fplugin-arg-cfi-tagvalue=$(CONFIG_HUAWEI_CFI_TAG)
-#ifeq ($(CONFIG_HUAWEI_CFI_DEBUG),y)
-#KBUILD_CFLAGS += -DHW_SAVE_CFI_LOG
-#endif
-#endif
+KBUILD_CFLAGS += -fplugin=$(srctree)/../aarch64-linux-android-4.9/libexec/gcc/aarch64-linux-android/4.9.x/cfi.so -fplugin-arg-cfi-logfault
+ifdef CONFIG_HUAWEI_CFI
+KBUILD_CFLAGS += -fplugin=$(srctree)/../aarch64-linux-android-4.9/libexec/gcc/aarch64-linux-android/4.9.x/cfi.so -fplugin-arg-cfi-abortfn=__cfi_report
+KBUILD_CFLAGS += -fplugin-arg-cfi-tagvalue=$(CONFIG_HUAWEI_CFI_TAG)
+ifeq ($(CONFIG_HUAWEI_CFI_DEBUG),y)
+KBUILD_CFLAGS += -DHW_SAVE_CFI_LOG
+endif
+endif
 
 ifeq ($(COMPILER),clang)
 KBUILD_CPPFLAGS += $(call cc-option,-Qunused-arguments,)
